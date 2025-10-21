@@ -1,0 +1,66 @@
+{
+  "userData": {
+    "brandName": "",
+    "userName": "Amey Bhilegaonkar",
+    "heroTitle": "Amey Bhilegaonkar",
+    "typingWords": [
+      "Data Engineer",
+      "Machine Learning",
+      "GenAI",
+      "Automation"
+    ],
+    "resumeUrl": "AmeyResume.pdf",
+    "socials": [
+      { "name": "LinkedIn", "url": "https://www.linkedin.com/in/amey-bhilegaonkar/", "icon": "linkedin" },
+      { "name": "GitHub", "url": "#", "icon": "github" },
+      { "name": "Twitter", "url": "https://x.com/ameygoes", "icon": "twitter" },
+      { "name": "YouTube", "url": "https://www.youtube.com/@ameygoes/sub_confirmation=1", "icon": "youtube" },
+      { "name": "Email", "url": "mailto:amey.b@apple.com", "icon": "mail" }
+    ],
+    "copyrightText": "Amey Bhilegaonkar. Crafted with precision and passion.",
+    "fontSettings": {
+      "default": {
+        "heroFont": "'HeroFont', serif",
+        "feedbackFont": "'Inter', sans-serif"
+      },
+      "immersive": {
+        "heroFont": "'HeroFont', sans-serif",
+        "feedbackFont": "'FeedbackFont', sans-serif"
+      }
+    }
+  },
+  "portfolioData": [
+    { "type": "project", "title": "AI-Powered Data Visualization", "imageUrl": "https://placehold.co/800x800/1e1e1e/333333?text=_", "tags": ["AI/ML", "D3.js", "React"], "link1": "#", "detailedDescription": "An advanced platform that uses machine learning to automatically generate insightful and interactive data visualizations from raw datasets." },
+    { "type": "project", "title": "Quantum Computing Simulator", "imageUrl": "https://placehold.co/800x400/1e1e1e/333333?text=_", "tags": ["Python", "Quantum Computing", "API"], "link1": "#", "detailedDescription": "A web-based simulator for quantum circuits, allowing users to design and test quantum algorithms in a user-friendly interface." },
+    { "type": "paper", "title": "Decentralized Identity Systems", "imageUrl": null, "tags": ["Blockchain", "Cryptography", "Security"], "link1": "#", "detailedDescription": "A research paper exploring novel architectures for self-sovereign identity using distributed ledger technology, focusing on privacy and scalability." },
+    { "type": "project", "title": "Decentralized Social Network", "imageUrl": "https://placehold.co/400x800/1e1e1e/333333?text=_", "tags": ["Web3", "Solidity", "Next.js"], "link1": "#", "detailedDescription": "A censorship-resistant social media platform built on decentralized protocols, giving users full control over their data and identity." },
+    { "type": "certification", "title": "TensorFlow Developer Certificate", "imageUrl": null, "tags": ["Machine Learning", "Google"], "link1": "#", "link2": "#", "detailedDescription": "Official certification from Google, demonstrating proficiency in building and training deep learning models using TensorFlow." },
+    { "type": "project", "title": "E-commerce on Blockchain", "imageUrl": "https://placehold.co/800x400/1e1e1e/333333?text=_", "tags": ["Blockchain", "E-commerce", "React"], "link1": "#", "detailedDescription": "A fully functional e-commerce platform where transactions are recorded on a public ledger for ultimate transparency and security." },
+    { "type": "project", "title": "AI-Integrated Fitness App", "imageUrl": null, "tags": ["AI", "Mobile App", "Fitness"], "link1": "#", "detailedDescription": "A mobile fitness application that uses AI to create personalized workout and nutrition plans based on user performance and goals." },
+    { "type": "certification", "title": "Certified Kubernetes Administrator", "imageUrl": null, "tags": ["DevOps", "Kubernetes", "Cloud"], "link1": "#", "link2": "#", "detailedDescription": "A professional certification from the CNCF, validating the skills required to perform the responsibilities of a Kubernetes administrator." },
+    { "type": "blog", "title": "The Art of Micro-Frontends", "imageUrl": "https://placehold.co/800x400/1e1e1e/333333?text=_", "tags": ["Architecture", "Web Dev", "Frontend"], "link1": "#", "detailedDescription": "A deep-dive blog post on architectural patterns for micro-frontends, discussing benefits, drawbacks, and implementation strategies with real-world examples." },
+    { "type": "project", "title": "IoT Smart Home Orchestrator", "imageUrl": "https://placehold.co/400x400/1e1e1e/333333?text=_", "tags": ["IoT", "MQTT", "Go"], "link1": "#", "detailedDescription": "A lightweight, powerful hub for managing and automating various smart home devices, with a focus on local control and privacy." },
+    { "type": "project", "title": "Real-time Collaborative IDE", "imageUrl": null, "tags": ["WebSockets", "Node.js", "Monaco Editor"], "link1": "#", "detailedDescription": "A cloud-native IDE that allows multiple developers to code, debug, and test in the same environment simultaneously." },
+    { "type": "project", "title": "AI-Powered Data Visualization", "imageUrl": "https://placehold.co/800x800/1e1e1e/333333?text=_", "tags": ["AI/ML", "D3.js", "React"], "link1": "#", "detailedDescription": "An advanced platform that uses machine learning to automatically generate insightful and interactive data visualizations from raw datasets." },
+    { "type": "project", "title": "Quantum Computing Simulator", "imageUrl": "https://placehold.co/800x400/1e1e1e/333333?text=_", "tags": ["Python", "Quantum Computing", "API"], "link1": "#", "detailedDescription": "A web-based simulator for quantum circuits, allowing users to design and test quantum algorithms in a user-friendly interface." },
+    { "type": "paper", "title": "Decentralized Identity Systems", "imageUrl": null, "tags": ["Blockchain", "Cryptography", "Security"], "link1": "#", "detailedDescription": "A research paper exploring novel architectures for self-sovereign identity using distributed ledger technology, focusing on privacy and scalability." },
+    { "type": "project", "title": "Decentralized Social Network", "imageUrl": "https://placehold.co/400x800/1e1e1e/333333?text=_", "tags": ["Web3", "Solidity", "Next.js"], "link1": "#", "detailedDescription": "A censorship-resistant social media platform built on decentralized protocols, giving users full control over their data and identity." },
+    { "type": "certification", "title": "TensorFlow Developer Certificate", "imageUrl": null, "tags": ["Machine Learning", "Google"], "link1": "#", "link2": "#", "detailedDescription": "Official certification from Google, demonstrating proficiency in building and training deep learning models using TensorFlow." },
+    { "type": "project", "title": "E-commerce on Blockchain", "imageUrl": "https://placehold.co/800x400/1e1e1e/333333?text=_", "tags": ["Blockchain", "E-commerce", "React"], "link1": "#", "detailedDescription": "A fully functional e-commerce platform where transactions are recorded on a public ledger for ultimate transparency and security." },
+    { "type": "project", "title": "AI-Integrated Fitness App", "imageUrl": null, "tags": ["AI", "Mobile App", "Fitness"], "link1": "#", "detailedDescription": "A mobile fitness application that uses AI to create personalized workout and nutrition plans based on user performance and goals." },
+    { "type": "certification", "title": "Certified Kubernetes Administrator", "imageUrl": null, "tags": ["DevOps", "Kubernetes", "Cloud"], "link1": "#", "link2": "#", "detailedDescription": "A professional certification from the CNCF, validating the skills required to perform the responsibilities of a Kubernetes administrator." },
+    { "type": "blog", "title": "The Art of Micro-Frontends", "imageUrl": "https://placehold.co/800x400/1e1e1e/333333?text=_", "tags": ["Architecture", "Web Dev", "Frontend"], "link1": "#", "detailedDescription": "A deep-dive blog post on architectural patterns for micro-frontends, discussing benefits, drawbacks, and implementation strategies with real-world examples." },
+    { "type": "project", "title": "IoT Smart Home Orchestrator", "imageUrl": "https://placehold.co/400x400/1e1e1e/333333?text=_", "tags": ["IoT", "MQTT", "Go"], "link1": "#", "detailedDescription": "A lightweight, powerful hub for managing and automating various smart home devices, with a focus on local control and privacy." },
+    { "type": "project", "title": "Real-time Collaborative IDE", "imageUrl": null, "tags": ["WebSockets", "Node.js", "Monaco Editor"], "link1": "#", "detailedDescription": "A cloud-native IDE that allows multiple developers to code, debug, and test in the same environment simultaneously." }
+  ],
+  "testimonialsData": [
+    { "name": "Jane Doe, CEO at TechCorp", "feedback": "An absolutely brilliant mind. The ability to transform complex problems into elegant, scalable solutions is second to none. A true asset to any team." },
+    { "name": "Dr. Alan Grant, Lead Researcher", "feedback": "The contribution to our research was pivotal. The insights and technical prowess brought our theoretical models to life. Highly recommended." },
+    { "name": "Sam Lee, Project Manager", "feedback": "Working with them is a masterclass in efficiency and communication. Deadlines are always met, and the quality of work consistently exceeds expectations." },
+    { "name": "Emily Carter, UX Director", "feedback": "Possesses a rare combination of technical depth and a keen eye for user experience. The collaboration resulted in a product that was both powerful and intuitive." },
+    { "name": "Mike Chen, Startup Founder", "feedback": "the best developer weve ever worked with. Delivered our MVP way ahead of schedule and the quality was just insane. will hire again for sure" },
+    { "name": "Sarah Jones, independant consultant", "feedback": "I was stuck on a really tricky architecure problem, and they figured it out in like an hour. Their understanding of distributed systems is amazing" },
+    { "name": "David 'Dave' Kim, Product Lead", "feedback": "Super reliable and always has a great attitude. doesnt matter what the problem is, they find a solution. A pleasure to have on the team." }
+  ]
+}
+

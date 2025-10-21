@@ -1,0 +1,1019 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stellar Forge | Your Name</title>
+    
+    <!-- External Font and Script CDNs have been removed as requested -->
+    <script src="three.min.js"></script>
+
+    <style>
+        /* --- FONT & VARIABLE DEFINITIONS --- */
+        @font-face {
+            font-family: 'HeroFont'; /* Custom name for your Italian font */
+            src: url('Italian.otf') format('opentype'); /* Correct format for .otf */
+        }
+        @font-face {
+            font-family: 'FeedbackFont'; /* Custom name for your thin font */
+            src: url('fontThin.ttf') format('truetype'); /* Correct format for .ttf */
+        }
+        :root {
+            --background: #000000;
+            --text-primary: #EAEAEA;
+            --text-secondary: #A0A0A0;
+            --accent: #FFFFFF;
+            --border: #2a2a2a;
+            --header-bg: rgba(17, 17, 17, 0.5);
+            --content-bg: rgba(17, 17, 17, 0.5);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            /* Font Variables for specific elements */
+            --font-heading: 'Bodoni Moda', serif;
+            --font-body: 'Inter', sans-serif;
+        }
+        
+        html.light-mode {
+            --background: #f0f0f0;
+            --text-primary: #1a1a1a;
+            --text-secondary: #555555;
+            --accent: #000000;
+            --border: #dddddd;
+            --header-bg: rgba(240, 240, 240, 0.5);
+            --content-bg: rgba(255, 255, 255, 0.7);
+            --glass-bg: rgba(255, 255, 255, 0.5);
+        }
+
+        /* --- BASE STYLES --- */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif; /* Consistent base body font */
+            background-color: var(--background);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        @media (min-width: 640px) { .container { max-width: 640px; } }
+        @media (min-width: 768px) { .container { max-width: 768px; } }
+        @media (min-width: 1024px) { .container { max-width: 1024px; } }
+        @media (min-width: 1280px) { .container { max-width: 1280px; } }
+        
+        /* --- SVG ICON STYLES --- */
+        .icon {
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+        .social-link .icon {
+            width: 1.75rem;
+            height: 1.75rem;
+        }
+        #close-project-modal-btn .icon {
+            width: 1.5rem;
+            height: 1.5rem;
+        }
+
+        /* --- TYPOGRAPHY & SHARED STYLES --- */
+        h2, h3, .font-display, .logo-text, .testimonial-quote-icon {
+            font-family: 'Bodoni Moda', serif;
+            letter-spacing: 0.03em;
+            transition: font-family 0.4s ease;
+        }
+        
+        #hero-title {
+            font-family: var(--font-heading);
+            margin-bottom: 1rem;
+        }
+        
+        .testimonial-card p {
+             font-family: var(--font-body);
+        }
+        
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+        }
+        
+        main, header, footer {
+            position: relative;
+            z-index: 2;
+            background-color: transparent;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background: var(--header-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: background-color 0.3s ease;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1.25rem;
+            padding-bottom: 1.25rem;
+        }
+        
+        .nav-right-group {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        @media (max-width: 640px) {
+            .nav-right-group { gap: 1rem; }
+            .immersive-text { display: none; }
+        }
+
+        .content-section {
+             background: var(--content-bg);
+             backdrop-filter: blur(10px);
+             -webkit-backdrop-filter: blur(10px);
+             border-radius: 1rem;
+             margin-bottom: 4rem;
+             padding: 2rem;
+             border: 1px solid var(--border);
+             transition: all 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        section.is-immersive {
+            background: transparent !important;
+            border-color: transparent !important;
+            backdrop-filter: none !important;
+            -webkit-backdrop-filter: none !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            transform: scale(1.02);
+        }
+        section.is-immersive .scroller, section.is-immersive #portfolio-container {
+             max-width: 100%;
+        }
+
+        section.is-immersive .grid-item,
+        section.is-immersive .testimonial-card {
+            background-color: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(2px);
+            border-color: rgba(42, 42, 42, 0.5);
+        }
+
+        html.light-mode section.is-immersive .grid-item,
+        html.light-mode section.is-immersive .testimonial-card {
+            background-color: rgba(255, 255, 255, 0.3);
+            border-color: rgba(221, 221, 221, 0.5);
+        }
+        
+        .hero-section {
+            height: 90vh;
+            position: relative;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero-section h1 {
+            font-size: clamp(3rem, 12vw, 8rem);
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            max-width: 48rem;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        @media (max-width: 768px) {
+            .hero-subtitle { font-size: 1.125rem; }
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            transition: color 0.3s ease, font-family 0.4s ease;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        .logo-text:hover {
+            color: #A371F7;
+        }
+        
+        #resume-btn {
+            font-weight: 600;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            text-decoration: none;
+        }
+        #resume-btn:hover {
+            background-color: var(--accent);
+            color: var(--background);
+        }
+        html.light-mode #resume-btn { background-color: var(--accent); color: var(--background); }
+        html.light-mode #resume-btn:hover { background-color: #333; }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--background); }
+        ::-webkit-scrollbar-thumb { background: #333; }
+        html.light-mode ::-webkit-scrollbar-thumb { background: #ccc; }
+        
+        #filter-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+        }
+
+        .filter-btn {
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            padding: 0.5rem 1.25rem;
+            border-radius: 9999px;
+            cursor: pointer;
+        }
+
+        .filter-btn:hover {
+            background-color: var(--accent);
+            color: var(--background);
+            border-color: var(--accent);
+        }
+
+        .filter-btn.active {
+            background-color: var(--accent);
+            color: var(--background);
+            border-color: var(--accent);
+        }
+        
+        .grid-item {
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.5rem;
+            transform: scale(1);
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        html.light-mode .grid-item { box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .grid-item:hover { transform: scale(1.03); box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+        html.light-mode .grid-item:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        
+        .grid-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: absolute;
+            top:0; left:0;
+        }
+        .grid-item:hover img { transform: scale(1.1); }
+
+        .grid-item-overlay { 
+            position: absolute; 
+            inset: 0; 
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent); 
+            opacity: 0; 
+            transition: opacity 0.4s ease; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-end; 
+            padding: 1.5rem; 
+            z-index: 2; 
+        }
+        .grid-item:hover .grid-item-overlay { opacity: 1; }
+        
+        .grid-item-overlay p {
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.4s ease, opacity 0.4s ease;
+            color: white !important;
+            font-size: 0.875rem;
+            text-transform: capitalize;
+        }
+        .grid-item:hover .grid-item-overlay p {
+            transform: translateY(0);
+            opacity: 1;
+            transition-delay: 0.2s;
+        }
+
+        .grid-item-no-image-content {
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+        }
+        .grid-item-no-image-content h3 {
+            font-size: 1.25rem;
+            color: var(--text-primary);
+            word-break: break-word; 
+            text-align: center;
+            margin: 0; /* Ensures no default margin pushes it off-center */
+        }
+
+        .modal { 
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(4px);
+            transition: opacity 0.3s ease; 
+            z-index: 100; 
+        }
+        .modal.opacity-0 { opacity: 0; }
+        .modal.pointer-events-none { pointer-events: none; }
+
+        .modal-content { 
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            padding: 2rem;
+            width: 100%;
+            max-width: 48rem;
+            margin: 1rem;
+            transform: scale(1);
+            opacity: 1;
+            transition: transform 0.3s ease, opacity 0.3s ease; 
+            background-color: var(--background); 
+            overflow-y: auto;
+            max-height: 90vh;
+        }
+        .modal-content.scale-95 { transform: scale(0.95); }
+        .modal-content.opacity-0 { opacity: 0; }
+
+        .scroller { max-width: 1200px; margin: 0 auto; transition: max-width 0.5s cubic-bezier(0.25, 1, 0.5, 1); }
+        .scroller__inner { display: flex; flex-wrap: nowrap; gap: 2rem; }
+        .scroller[data-animated="true"] .scroller__inner { animation: horizontal-scroll 80s linear infinite; }
+        .scroller[data-animated="true"] { overflow: hidden; -webkit-mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent); mask: linear-gradient(90deg, transparent, white 20%, white 80%, transparent); }
+        .scroller__inner:hover { animation-play-state: paused; }
+        @keyframes horizontal-scroll { to { transform: translate(calc(-50% - 1rem)); } }
+        
+        /* --- NEW SCROLLING GRID STYLES --- */
+        .portfolio-scroller-container {
+            height: 1030px; /* (250px item height + 8px gap) * 4 rows */
+            overflow: hidden;
+            -webkit-mask: linear-gradient(180deg, transparent, white 10%, white 90%, transparent);
+            mask: linear-gradient(180deg, transparent, white 10%, white 90%, transparent);
+        }
+        .portfolio-scrolling-columns {
+            display: flex;
+            gap: 0.5rem;
+            height: 100%;
+        }
+        .portfolio-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .portfolio-column > div { /* This is the animated inner container */
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;
+        }
+        .portfolio-scroller-container:hover .portfolio-column > div {
+            animation-play-state: paused;
+        }
+        .scroll-up-1 { animation-name: scroll-up; animation-duration: 40s; }
+        .scroll-up-2 { animation-name: scroll-up; animation-duration: 60s; }
+        .scroll-down-1 { animation-name: scroll-down; animation-duration: 45s; }
+        .scroll-down-2 { animation-name: scroll-down; animation-duration: 65s; }
+
+        @keyframes scroll-up {
+            from { transform: translateY(0); }
+            to { transform: translateY(calc(-50% - 0.25rem)); }
+        }
+        @keyframes scroll-down {
+            from { transform: translateY(calc(-50% - 0.25rem)); }
+            to { transform: translateY(0); }
+        }
+
+
+        .testimonial-card { 
+            position: relative; 
+            padding: 1.5rem;
+            padding-left: 3rem; 
+            background-color: var(--glass-bg);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            flex-shrink: 0;
+            width: 350px;
+            border: 1px solid var(--border);
+            border-radius: 0.5rem;
+        }
+        @media(min-width: 768px) {
+            .testimonial-card { width: 450px; }
+        }
+        .testimonial-card p:first-of-type {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.125rem;
+        }
+        .testimonial-card p:last-of-type {
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .testimonial-quote-icon { position: absolute; top: 0rem; left: -0.5rem; font-size: 6rem; color: var(--accent); line-height: 1; opacity: 0.8; user-select: none; transition: color 0.3s ease, font-family 0.4s ease; }
+        
+        #portfolio-container { position: relative; transition: max-width 0.5s cubic-bezier(0.25, 1, 0.5, 1); }
+        #portfolio-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-auto-rows: 250px; gap: 0.5rem; }
+        .grid-item.is-large { grid-column: span 2; grid-row: span 2; }
+        .grid-item.is-wide { grid-column: span 2; grid-row: span 1; }
+        .grid-item.is-tall { grid-column: span 1; grid-row: span 2; }
+        
+        footer { background: transparent; padding-top: 4rem; position: relative; }
+        .footer-content {
+            padding: 2rem 1.5rem;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+        #socials-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+        }
+        .social-link {
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+        .social-link:hover {
+            color: white;
+            transform: scale(1.25);
+        }
+        #copyright-text {
+            font-size: 0.75rem;
+        }
+
+        .back-to-top { position: absolute; top: -20px; left: 50%; transform: translateX(-50%); background: var(--background); border: 1px solid var(--border); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; text-decoration: none; color: var(--text-primary); }
+        .back-to-top:hover { transform: translateX(-50%) translateY(-3px); border-color: var(--accent); color: var(--accent); box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
+
+        .toggle-switch-wrapper { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.875rem; color: var(--text-secondary); }
+        .toggle-switch { position: relative; display: inline-block; width: 34px; height: 20px; }
+        .toggle-switch input { display: none; }
+        .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #333; transition: .4s; border-radius: 20px; }
+        .toggle-slider:before { position: absolute; content: ""; height: 14px; width: 14px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .toggle-slider { background-color: #A371F7; }
+        input:checked + .toggle-slider:before { transform: translateX(14px); }
+        
+        .theme-toggle { color: var(--text-secondary); }
+        .theme-toggle .sun-icon { display: block; }
+        .theme-toggle .moon-icon { display: none; }
+        html.light-mode .theme-toggle .sun-icon { display: none; }
+        html.light-mode .theme-toggle .moon-icon { display: block; }
+        
+        html.light-mode .social-link { color: var(--text-secondary); }
+        html.light-mode .social-link:hover { color: var(--text-primary); }
+
+        .typing-cursor {
+            border-right: .1em solid var(--accent);
+            animation: blink 1s steps(1) infinite;
+            transition: border-color 0.3s ease;
+        }
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+    </style>
+</head>
+
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <audio id="immersive-audio" src="songPortfolio.mp3" loop></audio>
+
+    <header>
+        <nav class="container">
+            <a href="#" id="brand-logo" class="logo-text"></a>
+            <div class="nav-right-group">
+                 <label class="toggle-switch-wrapper" title="Toggle Immersive Audio-Visual Experience">
+                    <span class="immersive-text">Immersive</span>
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="immersive-toggle-checkbox">
+                        <span class="toggle-slider"></span>
+                    </div>
+                </label>
+                 <label class="toggle-switch-wrapper theme-toggle" title="Toggle Light/Dark Mode">
+                    <div class="toggle-switch">
+                        <input type="checkbox" id="theme-toggle-checkbox">
+                        <span class="toggle-slider"></span>
+                    </div>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon sun-icon"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon moon-icon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                </label>
+                <a href="#" id="resume-btn" target="_blank" rel="noopener noreferrer">My Resume</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        <section class="hero-section" style="padding-top: 8rem;">
+            <div class="hero-content">
+                <h1 id="hero-title" class="font-display"></h1>
+                <p class="hero-subtitle">
+                    <span id="typing-effect"></span><span class="typing-cursor"></span>
+                </p>
+            </div>
+        </section>
+
+        <section id="work" class="content-section">
+            <div id="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="project">Projects</button>
+                <button class="filter-btn" data-filter="paper">Research Papers</button>
+                <button class="filter-btn" data-filter="certification">Certifications</button>
+                <button class="filter-btn" data-filter="blog">Blogs</button>
+            </div>
+            
+            <div id="portfolio-container" class="relative"></div>
+        </section>
+        
+        <section id="testimonials" class="content-section">
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h2 style="font-size: 2.25rem;" class="font-display">Words of Acclaim</h2>
+                <p style="color: var(--text-secondary); margin-top: 0.5rem;">What collaborators and clients have to say.</p>
+            </div>
+            
+            <div class="scroller" data-animated="true">
+                <div class="scroller__inner" id="testimonials-carousel"></div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <a href="#" class="back-to-top"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg></a>
+        <div class="container footer-content">
+             <div id="socials-container"></div>
+            <p id="copyright-text"></p>
+        </div>
+    </footer>
+
+
+    <div id="modal-container">
+        <div id="project-modal" class="modal opacity-0 pointer-events-none">
+            <div class="modal-content scale-95 opacity-0"></div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const ICONS = {
+                'arrow-left': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>`,
+                'arrow-right': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>`,
+                'x': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`,
+                'github': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>`,
+                'linkedin': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>`,
+                'twitter': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>`,
+                'youtube': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2A29 29 0 0 0 23 11.75a29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>`,
+                'instagram': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>`,
+                'website': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>`,
+                'mail': `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="icon"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>`
+            };
+            
+            fetch('data.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    let { userData, portfolioData, testimonialsData } = data;
+
+                    // Re-construct dynamic copyright text
+                    userData.copyrightText = `© ${new Date().getFullYear()} ${userData.copyrightText}`;
+
+                    // --- DOM Elements ---
+                    const filterButtons = document.getElementById('filter-buttons');
+                    const projectModal = document.getElementById('project-modal');
+                    const projectModalContent = projectModal.querySelector('.modal-content');
+                    const portfolioContainer = document.getElementById('portfolio-container');
+                    const root = document.documentElement;
+
+                    // --- Populate UI from userData ---
+                    const populateUserData = () => {
+                        document.title = `${userData.brandName} | ${userData.userName}`;
+                        document.getElementById('brand-logo').textContent = userData.brandName;
+                        document.getElementById('hero-title').textContent = userData.heroTitle;
+                        document.getElementById('resume-btn').href = userData.resumeUrl;
+                        document.getElementById('copyright-text').innerHTML = userData.copyrightText;
+                        
+                        const socialsContainer = document.getElementById('socials-container');
+
+                        socialsContainer.innerHTML = userData.socials.map(social => `
+                            <a href="${social.url}" ${social.icon !== 'mail' ? 'target="_blank" rel="noopener noreferrer"' : ''} class="social-link" title="${social.name}">
+                                ${ICONS[social.icon] || ''}
+                            </a>
+                        `).join('');
+                    };
+
+                    const openModal = (modal, content) => { modal.classList.remove('opacity-0', 'pointer-events-none'); content.classList.remove('scale-95', 'opacity-0'); };
+                    const closeModal = (modal, content) => { content.classList.add('scale-95', 'opacity-0'); modal.classList.add('opacity-0', 'pointer-events-none'); };
+
+                    const openProjectModal = (item) => {
+                        const tagsHtml = item.tags ? item.tags.map(tag => `<span style="background-color: var(--border); font-size: 0.75rem; font-weight: 500; color: var(--text-secondary); padding: 0.25rem 0.5rem; border-radius: 9999px;">${tag}</span>`).join('') : '';
+                        
+                        const capitalize = (s) => s && s[0].toUpperCase() + s.slice(1);
+                        const buttonText = `View ${capitalize(item.type)}`;
+                        
+                        const primaryBtnStyle = `display: inline-block; background-color: white; color: black; padding: 0.5rem 1.25rem; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; transition: background-color 0.3s; text-decoration: none; text-align: center;`;
+                        const secondaryBtnStyle = `display: inline-block; border: 1px solid var(--border); color: white; padding: 0.5rem 1.25rem; border-radius: 0.375rem; font-size: 0.875rem; font-weight: 600; transition: background-color 0.3s; text-decoration: none; text-align: center;`;
+
+
+                        const buttonsHtml = item.type === 'certification' ? `
+                            <a href="${item.link1 || '#'}" target="_blank" rel="noopener noreferrer" style="${primaryBtnStyle}">${'Course Link'}</a>
+                            <a href="${item.link2 || '#'}" target="_blank" rel="noopener noreferrer" style="${secondaryBtnStyle}">${'See Certificate'}</a>
+                        ` : `<a href="${item.link1 || '#'}" target="_blank" rel="noopener noreferrer" style="${primaryBtnStyle}">${buttonText}</a>`;
+
+                        projectModalContent.innerHTML = `
+                            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem;">
+                                 <h3 class="font-display" style="font-size: 1.875rem;">${item.title}</h3>
+                                 <button id="close-project-modal-btn" style="color: var(--text-secondary); margin-top: -0.5rem; margin-right: -0.5rem; padding: 0.5rem; background: none; border: none; cursor: pointer;">${ICONS['x'] || ''}</button>
+                            </div>
+                            <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">${item.detailedDescription}</p>
+                            <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2rem;">${tagsHtml}</div>
+                            <div style="display: flex; flex-direction: column; gap: 0.75rem;">${buttonsHtml}</div>
+                        `;
+                        projectModalContent.querySelector('#close-project-modal-btn').addEventListener('click', () => closeModal(projectModal, projectModalContent));
+                        openModal(projectModal, projectModalContent);
+                    };
+
+                    const renderPortfolio = (pData, filter = 'all') => {
+                        portfolioContainer.innerHTML = ''; 
+                        const filteredData = pData.filter(item => filter === 'all' || item.type === filter);
+                        
+                        if (filteredData.length > 16) {
+                            // Logic for vertical auto-scrolling multi-column grid
+                            portfolioContainer.innerHTML = `
+                                <div class="portfolio-scroller-container">
+                                    <div class="portfolio-scrolling-columns"></div>
+                                </div>`;
+                            const columnsContainer = portfolioContainer.querySelector('.portfolio-scrolling-columns');
+                            const columns = [ [], [], [], [] ];
+                            const columnElements = [];
+
+                            for(let i = 0; i < 4; i++) {
+                                const colEl = document.createElement('div');
+                                colEl.className = 'portfolio-column';
+                                columnElements.push(colEl);
+                                columnsContainer.appendChild(colEl);
+                            }
+
+                            filteredData.forEach((item, index) => {
+                                columns[index % 4].push(item);
+                            });
+                            
+                            const animationClasses = ['scroll-up-1', 'scroll-down-1', 'scroll-up-2', 'scroll-down-2'];
+
+                            columnElements.forEach((colEl, i) => {
+                                const animatedInnerDiv = document.createElement('div');
+                                // Assign a random animation class
+                                animatedInnerDiv.className = animationClasses[Math.floor(Math.random() * animationClasses.length)];
+                                
+                                // Duplicate items for seamless loop
+                                const itemsToRender = [...columns[i], ...columns[i]];
+
+                                itemsToRender.forEach(item => {
+                                    const card = document.createElement('div');
+                                    card.className = 'grid-item';
+                                    card.style.height = '250px'; // Explicit height for consistency
+                                    
+                                    if (item.imageUrl) {
+                                        card.innerHTML = `
+                                            <img src="${item.imageUrl}" alt="${item.title}" loading="lazy" 
+                                                onerror="this.style.display='none'; this.parentElement.innerHTML = '<div class=\\'grid-item-no-image-content\\'><h3>${item.title}</h3></div><div class=\\'grid-item-overlay\\'><p>${item.type}</p></div>';">
+                                            <div class="grid-item-overlay"><p>${item.type}</p></div>`;
+                                    } else {
+                                        card.innerHTML = `
+                                            <div class="grid-item-no-image-content"><h3>${item.title}</h3></div>
+                                            <div class="grid-item-overlay"><p>${item.type}</p></div>`;
+                                    }
+                                    card.addEventListener('click', () => openProjectModal(item));
+                                    animatedInnerDiv.appendChild(card);
+                                });
+                                colEl.appendChild(animatedInnerDiv);
+                            });
+
+                        } else {
+                            // Logic for the static grid view
+                            const grid = document.createElement('div');
+                            grid.id = 'portfolio-grid';
+                            const sizePattern = ['is-large', 'is-wide', '', 'is-tall', '', 'is-wide'];
+                            filteredData.forEach((item, index) => {
+                                const card = document.createElement('div');
+                                card.className = `grid-item ${sizePattern[index % sizePattern.length]}`;
+                                
+                                if (item.imageUrl) {
+                                    card.innerHTML = `
+                                        <img src="${item.imageUrl}" alt="${item.title}" loading="lazy" 
+                                             onerror="this.style.display='none'; this.parentElement.innerHTML = '<div class=\\'grid-item-no-image-content\\'><h3>${item.title}</h3></div><div class=\\'grid-item-overlay\\'><p>${item.type}</p></div>';">
+                                        <div class="grid-item-overlay">
+                                            <p>${item.type}</p>
+                                        </div>
+                                    `;
+                                } else {
+                                    card.innerHTML = `
+                                        <div class="grid-item-no-image-content">
+                                            <h3>${item.title}</h3>
+                                        </div>
+                                        <div class="grid-item-overlay">
+                                            <p>${item.type}</p>
+                                        </div>
+                                    `;
+                                }
+
+                                card.addEventListener('click', () => openProjectModal(item));
+                                grid.appendChild(card);
+                            });
+                            portfolioContainer.appendChild(grid);
+                        }
+                    };
+
+                    const renderTestimonials = () => {
+                        const testimonialsCarousel = document.getElementById('testimonials-carousel');
+                        if (!testimonialsCarousel || !testimonialsData) return;
+                        testimonialsCarousel.innerHTML = '';
+                        const itemsToRender = [...testimonialsData, ...testimonialsData];
+                        itemsToRender.forEach(testimonial => {
+                            const card = document.createElement('div');
+                            card.className = 'testimonial-card';
+                            card.innerHTML = `<div class="testimonial-quote-icon">“</div><div style="position: relative; z-index: 10;"><p>${testimonial.feedback}</p><p>- ${testimonial.name}</p></div>`;
+                            testimonialsCarousel.appendChild(card);
+                        });
+                    };
+
+                    // --- FONT MANAGEMENT ---
+                    const applyFonts = (fontConf) => {
+                        root.style.setProperty('--font-heading', fontConf.heroFont);
+                        root.style.setProperty('--font-body', fontConf.feedbackFont);
+                    };
+
+                    // --- THREE.JS and IMMERSIVE / THEME MODES ---
+                    const bgCanvas = document.getElementById('bg-canvas');
+                    const scene = new THREE.Scene();
+                    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                    const renderer = new THREE.WebGLRenderer({ canvas: bgCanvas, alpha: true });
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                    renderer.setPixelRatio(window.devicePixelRatio);
+                    camera.position.z = 1.5;
+
+                    let defaultParticlesMesh, immersiveGroup, plexusLines;
+
+                    const createDefaultParticles = () => {
+                        const geometry = new THREE.BufferGeometry();
+                        const count = 5000;
+                        const positions = new Float32Array(count * 3);
+                        for (let i = 0; i < count * 3; i++) { positions[i] = (Math.random() - 0.5) * 5; }
+                        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+                        const material = new THREE.PointsMaterial({ size: 0.006, color: 0xaaaaaa, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending });
+                        return new THREE.Points(geometry, material);
+                    };
+                    defaultParticlesMesh = createDefaultParticles();
+                    scene.add(defaultParticlesMesh);
+                    
+                    const initImmersiveMode = () => {
+                        immersiveGroup = new THREE.Group();
+                        const geometry = defaultParticlesMesh.geometry.clone();
+                        const material = defaultParticlesMesh.material.clone();
+                        const points = new THREE.Points(geometry, material);
+                        immersiveGroup.add(points);
+
+                        const lineMat = new THREE.LineBasicMaterial({ color: material.color, transparent: true, opacity: 0.2, blending: THREE.AdditiveBlending });
+                        const lineGeo = new THREE.BufferGeometry();
+                        plexusLines = new THREE.LineSegments(lineGeo, lineMat);
+                        immersiveGroup.add(plexusLines);
+                    };
+
+                    const audio = document.getElementById('immersive-audio');
+                    const immersiveToggle = document.getElementById('immersive-toggle-checkbox');
+                    const workSection = document.getElementById('work');
+                    const testimonialsSection = document.getElementById('testimonials');
+                    let audioContextInitialized = false;
+
+                    // --- TYPING EFFECT LOGIC ---
+                    const typingEffectElement = document.getElementById('typing-effect');
+                    const typingWords = userData.typingWords || [];
+                    let wordIndex = 0;
+                    let charIndex = 0;
+                    let isDeleting = false;
+
+                    function type() {
+                        if (typingWords.length === 0) return;
+                        
+                        const currentWord = typingWords[wordIndex];
+                        let displayText = '';
+                        let timeout = isDeleting ? 75 : 150;
+
+                        if (isDeleting) {
+                            displayText = currentWord.substring(0, charIndex - 1);
+                            charIndex--;
+                        } else {
+                            displayText = currentWord.substring(0, charIndex + 1);
+                            charIndex++;
+                        }
+
+                        typingEffectElement.textContent = displayText;
+
+                        if (!isDeleting && charIndex === currentWord.length) {
+                            timeout = 2000;
+                            isDeleting = true;
+                        } else if (isDeleting && charIndex === 0) {
+                            isDeleting = false;
+                            wordIndex = (wordIndex + 1) % typingWords.length;
+                            timeout = 500;
+                        }
+                        
+                        setTimeout(type, timeout);
+                    }
+
+                    immersiveToggle.addEventListener('change', () => {
+                        const isImmersiveMode = immersiveToggle.checked;
+                        if (isImmersiveMode) {
+                            if (!audioContextInitialized) { initImmersiveMode(); audioContextInitialized = true; }
+                            audio.play().catch(e => console.error("Audio play failed:", e));
+                            scene.remove(defaultParticlesMesh);
+                            scene.add(immersiveGroup);
+                            workSection.classList.add('is-immersive');
+                            testimonialsSection.classList.add('is-immersive');
+                            applyFonts(userData.fontSettings.immersive);
+                        } else {
+                            audio.pause();
+                            scene.add(defaultParticlesMesh);
+                            scene.remove(immersiveGroup);
+                            workSection.classList.remove('is-immersive');
+                            testimonialsSection.classList.remove('is-immersive');
+                            applyFonts(userData.fontSettings.default);
+                        }
+                    });
+                    
+                    const updatePlexus = () => {
+                        if (!immersiveGroup) return;
+                        const particles = immersiveGroup.children[0].geometry.attributes.position.array;
+                        const numParticles = particles.length / 3;
+                        const lineGeo = plexusLines.geometry;
+                        const positions = [];
+                        const maxDist = 0.5;
+                        let connectionCount = 0;
+
+                        for (let i = 0; i < numParticles; i++) {
+                            if(connectionCount > 150) break;
+                            for (let j = i + 1; j < numParticles; j++) {
+                                if(Math.random() > 0.01) continue; 
+                                
+                                const p1_index = i * 3, p2_index = j * 3;
+                                const dx = particles[p1_index] - particles[p2_index];
+                                const dy = particles[p1_index+1] - particles[p2_index+1];
+                                const dz = particles[p1_index+2] - particles[p2_index+2];
+
+                                if(Math.sqrt(dx*dx + dy*dy + dz*dz) < maxDist) {
+                                    positions.push(particles[p1_index], particles[p1_index+1], particles[p1_index+2]);
+                                    positions.push(particles[p2_index], particles[p2_index+1], particles[p2_index+2]);
+                                    connectionCount++;
+                                }
+                            }
+                        }
+                        lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+                        lineGeo.attributes.position.needsUpdate = true;
+                    };
+
+                    const themeToggle = document.getElementById('theme-toggle-checkbox');
+
+                    const setTheme = (isLight) => {
+                        const darkColor = 0xaaaaaa, lightColor = 0x333333;
+                        if(isLight) {
+                            root.classList.add('light-mode');
+                            defaultParticlesMesh.material.color.setHex(lightColor);
+                            if(audioContextInitialized){
+                                immersiveGroup.children[0].material.color.setHex(lightColor);
+                                plexusLines.material.color.setHex(lightColor);
+                                plexusLines.material.blending = THREE.NormalBlending;
+                                plexusLines.material.opacity = 0.4;
+                            }
+                        } else {
+                            root.classList.remove('light-mode');
+                            defaultParticlesMesh.material.color.setHex(darkColor);
+                            if(audioContextInitialized){
+                                immersiveGroup.children[0].material.color.setHex(darkColor);
+                                plexusLines.material.color.setHex(darkColor);
+                                plexusLines.material.blending = THREE.AdditiveBlending;
+                                plexusLines.material.opacity = 0.2;
+                            }
+                        }
+                    }
+
+                    themeToggle.addEventListener('change', () => {
+                        const isLight = themeToggle.checked;
+                        setTheme(isLight);
+                        localStorage.setItem('theme', isLight ? 'light' : 'dark');
+                    });
+                    
+                    const savedTheme = localStorage.getItem('theme') === 'light';
+                    themeToggle.checked = savedTheme;
+                    setTheme(savedTheme);
+
+                    let mouseX = 0, mouseY = 0;
+                    document.addEventListener('mousemove', (event) => { mouseX = event.clientX; mouseY = event.clientY; });
+                    const clock = new THREE.Clock();
+                    let lastPlexusUpdate = 0;
+
+                    const animate = () => {
+                        requestAnimationFrame(animate);
+                        const elapsedTime = clock.getElapsedTime();
+                        const activeMesh = immersiveToggle.checked ? (immersiveGroup || defaultParticlesMesh) : defaultParticlesMesh;
+
+                        activeMesh.rotation.y = -0.05 * elapsedTime;
+                        if (mouseX > 0) {
+                            activeMesh.rotation.x = -mouseY * (elapsedTime * 0.00008);
+                            activeMesh.rotation.y += -mouseX * (elapsedTime * 0.00008);
+                        }
+
+                        if (immersiveToggle.checked && elapsedTime - lastPlexusUpdate > 0.5) {
+                            updatePlexus();
+                            lastPlexusUpdate = elapsedTime;
+                        }
+
+                        renderer.render(scene, camera);
+                    };
+                    
+                    // --- INITIALIZATION ---
+                    populateUserData();
+                    applyFonts(userData.fontSettings.default);
+                    renderPortfolio(portfolioData);
+                    renderTestimonials();
+                    animate();
+                    if (typingWords.length > 0) type(); // Start typing effect
+
+                    window.addEventListener('resize', () => {
+                        renderer.setSize(window.innerWidth, window.innerHeight);
+                        camera.aspect = window.innerWidth / window.innerHeight;
+                        camera.updateProjectionMatrix();
+                    });
+
+                    filterButtons.addEventListener('click', (e) => { if (e.target.tagName === 'BUTTON') { document.querySelector('.filter-btn.active').classList.remove('active'); e.target.classList.add('active'); renderPortfolio(portfolioData, e.target.dataset.filter); } });
+                    projectModal.addEventListener('click', (e) => { if(e.target === projectModal) closeModal(projectModal, projectModalContent); });
+                
+                    document.addEventListener('visibilitychange', () => {
+                        // If the tab becomes visible again and immersive mode is on, resume the audio.
+                        if (document.visibilityState === 'visible' && immersiveToggle.checked) {
+                            audio.play().catch(e => console.error("Audio play failed on visibility change:", e));
+                        }
+                    });
+
+                }).catch(error => {
+                    console.error("Fatal Error: Could not load data.json.", error);
+                    // Optionally, display an error message to the user on the page
+                    document.body.innerHTML = `<div style="color: white; text-align: center; padding-top: 50px;"><h1>Error</h1><p>Could not load portfolio content. Please check the console for details.</p></div>`;
+                });
+        });
+    </script>
+
+</body>
+</html>
+
